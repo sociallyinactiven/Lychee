@@ -6,6 +6,17 @@
     <title>Lychee External</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                lychee: '#F25C6F',
+              }
+            }
+          }
+        }
+    </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -43,7 +54,6 @@
 <body>
     <div id="root"></div>
 
-
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -60,7 +70,7 @@
                 onClick={() => onClick(id)}
                 className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200 relative ${
                     isActive 
-                    ? 'bg-[#18181b] text-pink-200 rounded-t-lg border-x border-t border-zinc-800' 
+                    ? 'bg-[#18181b] text-lychee rounded-t-lg border-x border-t border-zinc-800' 
                     : 'text-zinc-500 hover:text-zinc-300'
                 }`}
             >
@@ -73,7 +83,7 @@
         const FeatureItem = ({ label, value }) => (
             <div className="flex items-center justify-between py-2 border-b border-zinc-800/50 last:border-0 group">
                 <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-pink-400/40 group-hover:scale-125 transition-transform"></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-lychee/40 group-hover:scale-125 transition-transform"></div>
                     <span className="text-zinc-300 text-sm group-hover:text-white transition-colors">{label}</span>
                 </div>
                 {value && <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800">{value}</span>}
@@ -81,9 +91,9 @@
         );
 
         const FeatureSection = ({ title, children }) => (
-            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-pink-200/10 transition-colors">
-                <h3 className="text-pink-200/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                    <div className="w-4 h-px bg-pink-200/20"></div>
+            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-lychee/10 transition-colors">
+                <h3 className="text-lychee/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                    <div className="w-4 h-px bg-lychee/20"></div>
                     {title}
                 </h3>
                 <div className="flex flex-col">{children}</div>
@@ -98,14 +108,12 @@
 
             return (
                 <div className="min-h-screen relative">
-                    {}
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-screen-xl h-[500px] pointer-events-none">
-                        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-pink-500/5 rounded-full blur-[120px]" />
+                        <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-lychee/5 rounded-full blur-[120px]" />
                     </div>
 
                     <main className="px-6 pt-16 pb-20 relative z-20">
                         <div className="w-full max-w-6xl mx-auto mt-8 mb-20 bg-[#09090b] rounded-xl border border-zinc-800 shadow-2xl overflow-hidden flex flex-col">
-                            {}
                             <div className="bg-[#0c0c0e] border-b border-zinc-800 px-4 pt-3 flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <div className="flex gap-2 mr-4">
@@ -119,14 +127,13 @@
                                     </div>
                                 </div>
                                 <div className="pb-3">
-                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-pink-200/10 hover:bg-pink-200/20 text-pink-200 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-pink-200/20">
+                                    <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-lychee/10 hover:bg-lychee/20 text-lychee px-3 py-1.5 rounded-md text-xs font-semibold transition-colors border border-lychee/20">
                                         <i className="fa-brands fa-discord"></i>
                                         <span>Join Community</span>
                                     </a>
                                 </div>
                             </div>
 
-                            {}
                             <div className="bg-[#18181b] px-4 py-2 border-b border-zinc-800 flex items-center gap-3">
                                 <div className="flex gap-2 text-zinc-600 text-xs">
                                     <i className="fa-solid fa-arrow-left cursor-pointer hover:text-zinc-400"></i>
@@ -134,12 +141,11 @@
                                     <i className="fa-solid fa-rotate-right cursor-pointer hover:text-zinc-400 ml-1"></i>
                                 </div>
                                 <div className="flex-1 bg-zinc-900/50 rounded-md py-1 px-3 text-xs text-zinc-500 font-mono flex items-center gap-2 border border-zinc-800">
-                                    <i className="fa-solid fa-lock text-[10px] text-pink-300"></i>
+                                    <i className="fa-solid fa-lock text-[10px] text-lychee"></i>
                                     <span>lychee.ice/{activeTab}</span>
                                 </div>
                             </div>
 
-                            {/* Content Area */}
                             <div className="p-8 h-full min-h-[600px] bg-[#09090b] relative">
                                 {activeTab === 'home' && (
                                     <div className="space-y-12 pb-16 animate-in">
@@ -149,14 +155,14 @@
                                                     <img src="https://i.postimg.cc/MKwM9mm1/Lychee-LESSFAT.png" alt="Lychee Icon" className="w-16 h-16 object-contain mt-1" />
                                                     <h2 className="text-3xl font-bold text-white leading-tight">
                                                         Lychee.ice <br/> 
-                                                        <span className="text-pink-200">the most tuff external</span>
+                                                        <span className="text-lychee">the most tuff external</span>
                                                     </h2>
                                                 </div>
                                                 <p className="text-zinc-400 leading-relaxed">
                                                     Lychee.ice works completely outside the game, using memory scanning and kernel-level monitoring to observe and interact without ever injecting into the game process. By remaining fully external, it avoids the usual detection paths that internal tools rely on, reducing exposure to common anti-cheat checks while keeping performance stable and behavior consistent.
                                                 </p>
                                                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                                                    <a href={DOWNLOAD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-pink-200 text-[#09090b] font-bold rounded-lg hover:bg-pink-300 transition-colors shadow-lg shadow-pink-500/10 text-center">Download</a>
+                                                    <a href={DOWNLOAD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-lychee text-[#09090b] font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-lychee/10 text-center">Download</a>
                                                     <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-zinc-900 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-zinc-700 transition-colors text-center inline-block">Join Discord</a>
                                                 </div>
                                             </div>
@@ -168,14 +174,14 @@
                                         <div className="bg-[#0c0c0e] border border-zinc-800 rounded-lg overflow-hidden flex flex-col">
                                             <div className="px-5 py-3 border-b border-zinc-800/50 bg-zinc-900/20 flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
-                                                    <i className="fa-solid fa-terminal text-pink-300 text-xs"></i>
+                                                    <i className="fa-solid fa-terminal text-lychee text-xs"></i>
                                                     <span className="text-[10px] font-mono text-zinc-300 uppercase tracking-[0.2em]">Live Changelog</span>
                                                 </div>
                                                 <div className="flex gap-1.5"><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div></div>
                                             </div>
                                             <div className="p-6 space-y-3 font-mono">
                                                 <div className="flex gap-4 group">
-                                                    <span className="text-pink-400 font-bold text-xs select-none">[+]</span>
+                                                    <span className="text-lychee font-bold text-xs select-none">[+]</span>
                                                     <span className="text-zinc-300 text-xs">released - 1/17/2026</span>
                                                 </div>
                                                 <div className="pt-4 border-t border-zinc-800/30">
@@ -190,7 +196,7 @@
                                     <div className="flex flex-col h-full relative animate-in">
                                         <div className="flex gap-2 mb-8 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800 self-start">
                                             {['Combat', 'Visuals', 'Movement', 'Settings'].map((cat) => (
-                                                <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-pink-200 text-[#09090b] shadow-lg shadow-pink-500/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
+                                                <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-lychee text-[#09090b] shadow-lg shadow-lychee/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
                                                     <i className={`fa-solid ${categoryIcons[cat]} text-[10px]`}></i>
                                                     {cat}
                                                 </button>
@@ -237,7 +243,7 @@
                                                     <FeatureSection title="Visual Options → Visuals">
                                                         <FeatureItem label="Masterswitch" value="Active" />
                                                         <FeatureItem label="Boxes" value="2D / Corner" />
-                                                        <FeatureItem label="Box Color" value="#FBCFE8" />
+                                                        <FeatureItem label="Box Color" value="#F25C6F" />
                                                         <FeatureItem label="Box Fill" value="Color Picker" />
                                                         <FeatureItem label="Glow ESP" value="Active" />
                                                         <FeatureItem label="Skeletons" value="Toggle" />
@@ -299,7 +305,7 @@
                                 <div className="absolute bottom-4 right-8 group cursor-default select-none text-right">
                                     <div className="relative">
                                         <span className="text-zinc-800 text-[10px] font-mono transition-opacity duration-300 group-hover:opacity-0 block">safety is not guaranteed</span>
-                                        <span className="text-pink-400/80 text-[10px] font-mono absolute top-0 right-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap italic">its a joke twin</span>
+                                        <span className="text-lychee/80 text-[10px] font-mono absolute top-0 right-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap italic">its a joke twin</span>
                                     </div>
                                 </div>
                             </div>
