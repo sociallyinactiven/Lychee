@@ -40,7 +40,6 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body>
     <div id="root"></div>
@@ -54,6 +53,7 @@
         const { useState } = React;
 
         const DISCORD_LINK = "https://discord.gg/fmAkWcaTTM";
+        const DOWNLOAD_LINK = "https://work.ink/1YiU/lycheeice-external";
         const PREVIEW_YOUTUBE_ID = "dQw4w9WgXcQ";
 
         // --- Components ---
@@ -159,7 +159,7 @@
                                                     Lychee.ice works completely outside the game, using memory scanning and kernel-level monitoring to observe and interact without ever injecting into the game process. By remaining fully external, it avoids the usual detection paths that internal tools rely on, reducing exposure to common anti-cheat checks while keeping performance stable and behavior consistent.
                                                 </p>
                                                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                                                    <button className="px-8 py-3 bg-pink-200 text-[#09090b] font-bold rounded-lg hover:bg-pink-300 transition-colors shadow-lg shadow-pink-500/10">Download</button>
+                                                    <a href={DOWNLOAD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-pink-200 text-[#09090b] font-bold rounded-lg hover:bg-pink-300 transition-colors shadow-lg shadow-pink-500/10 text-center">Download</a>
                                                     <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="px-8 py-3 bg-zinc-900 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-zinc-700 transition-colors text-center inline-block">Join Discord</a>
                                                 </div>
                                             </div>
@@ -315,6 +315,5 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
-<script type="module" src="/index.tsx"></script>
 </body>
 </html>
