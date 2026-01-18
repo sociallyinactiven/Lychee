@@ -292,6 +292,7 @@
                                     <div className="flex gap-1">
                                         <BrowserTab id="home" label="Home" icon="fa-house" isActive={activeTab === 'home'} onClick={setActiveTab} />
                                         <BrowserTab id="features" label="Features" icon="fa-bolt" isActive={activeTab === 'features'} onClick={setActiveTab} />
+                                        <BrowserTab id="showcase" label="Showcase" icon="fa-display" isActive={activeTab === 'showcase'} onClick={setActiveTab} />
                                     </div>
                                 </div>
                                 <div className="pb-3">
@@ -475,12 +476,27 @@
                                     </div>
                                 )}
 
-                                <div className="absolute bottom-4 right-8 group cursor-default select-none text-right">
-                                    <div className="relative">
-                                        <span className="text-zinc-600 text-[10px] font-mono transition-opacity duration-300 group-hover:opacity-0 block">safety is not guaranteed</span>
-                                        <span className="text-lychee/80 text-[10px] font-mono absolute top-0 right-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap italic">its a joke twin</span>
+                                {activeTab === 'showcase' && (
+                                    <div className="space-y-8 animate-in">
+                                        <div className="flex items-center justify-between border-b border-zinc-800 pb-6">
+                                            <div>
+                                                <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+                                                    User Showcase
+                                                    <span className="text-lychee text-xs bg-lychee/10 px-2 py-0.5 rounded border border-lychee/20 uppercase tracking-tighter">Community</span>
+                                                </h3>
+                                                <p className="text-zinc-500 text-sm mt-1">Check out some of the videos made by our users and creators.</p>
+                                            </div>
+                                            <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-lg text-xs font-bold text-zinc-300 hover:border-lychee/30 transition-colors">
+                                                Submit Yours
+                                            </a>
+                                        </div>
+                                        
+                                        <div className="flex flex-col items-center justify-center py-20 bg-zinc-900/10 rounded-2xl border border-zinc-800/30 border-dashed">
+                                            <i className="fa-solid fa-video-slash text-4xl text-zinc-800 mb-4"></i>
+                                            <p className="text-zinc-600 font-mono text-sm tracking-widest uppercase">Waiting for submissions...</p>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </main>
