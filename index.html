@@ -95,6 +95,33 @@
             position: relative;
             z-index: 10;
         }
+
+        /* Custom Slider Style */
+        .custom-slider-container {
+            position: relative;
+            width: 100%;
+            height: 10px;
+            background-color: #1a1a1e;
+            border: 1px solid #27272a;
+        }
+        .custom-slider-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #F25C6F;
+            transition: width 0.05s linear;
+        }
+        .custom-slider-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
     </style>
 <script type="importmap">
 {
@@ -171,6 +198,30 @@
                 {value && <span className="text-[10px] font-mono text-zinc-500 bg-zinc-900 px-1.5 py-0.5 rounded border border-zinc-800">{value}</span>}
             </div>
         );
+
+        const FeatureSlider = ({ label, value, min, max, step, onChange }) => {
+            const percentage = ((value - min) / (max - min)) * 100;
+            return (
+                <div className="py-3 border-b border-zinc-800/50 last:border-0 group select-none">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-zinc-300 text-sm group-hover:text-white transition-colors">{label}</span>
+                        <span className="text-xs font-mono text-zinc-400">{value.toFixed(1)}</span>
+                    </div>
+                    <div className="custom-slider-container">
+                        <div className="custom-slider-fill" style={{ width: `${percentage}%` }}></div>
+                        <input 
+                            type="range" 
+                            min={min} 
+                            max={max} 
+                            step={step} 
+                            value={value} 
+                            onChange={(e) => onChange(parseFloat(e.target.value))}
+                            className="custom-slider-input"
+                        />
+                    </div>
+                </div>
+            );
+        };
 
         const FeatureSection = ({ title, children }) => (
             <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-lychee/10 transition-colors">
@@ -264,6 +315,12 @@
             const [activeFeatureCategory, setActiveFeatureCategory] = useState('Combat');
             const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
+            // Settings states
+            const [fovSize, setFovSize] = useState(50.0);
+            const [smoothing, setSmoothing] = useState(5.0);
+            const [speedValue, setSpeedValue] = useState(5.0);
+            const [predictionX, setPredictionX] = useState(0.12);
+
             const categoryIcons = { Combat: 'fa-crosshairs', Visuals: 'fa-eye', Movement: 'fa-person-running', Settings: 'fa-gears' };
 
             useEffect(() => {
@@ -354,9 +411,27 @@
                                                 <div className="flex gap-1.5"><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div><div className="w-2 h-2 rounded-full bg-zinc-800"></div></div>
                                             </div>
                                             <div className="p-6 space-y-3 font-mono">
-                                                <div className="flex gap-4 group">
-                                                    <span className="text-lychee font-bold text-xs select-none">[+]</span>
-                                                    <span className="text-zinc-300 text-xs">released - 1/17/2026</span>
+                                                <div className="space-y-2">
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">Fog changer - Visuals -> Misc subtab</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">Visuals UI reorganization - Main/Info/Misc subtabs</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">Box fill gradients - 6 gradient directions with color customization</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">ESP customization - Box outline thickness, corner size, rounding, name font size, name background, tracer gradient</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">FOV shape styles - Circle, Square, Triangle, Pentagon, Hexagon, Octagon</span>
+                                                    </div>
                                                 </div>
                                                 <div className="pt-4 border-t border-zinc-800/30">
                                                     <span className="text-zinc-600 text-[10px] italic">End of logs... waiting for updates.</span>
@@ -387,83 +462,78 @@
                                                         <FeatureItem label="Aim Part" value="Head" />
                                                         <FeatureItem label="Target Method" value="FOV" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="FOV Settings">
+                                                    <FeatureSection title="FOV Configuration">
                                                         <FeatureItem label="Use FOV" value="Active" />
-                                                        <FeatureItem label="Draw FOV" value="Color Picker" />
-                                                        <FeatureItem label="FOV Size" value="120px" />
+                                                        <FeatureSlider label="FOV Size" min={10} max={250} step={1} value={fovSize} onChange={setFovSize} />
+                                                        <FeatureItem label="FOV Shape" value="Circle" />
+                                                        <FeatureItem label="Draw FOV" value="Active" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Assistance">
+                                                    <FeatureSection title="Accuracy & Smooth">
+                                                        <FeatureSlider label="Smoothing" min={1} max={20} step={0.1} value={smoothing} onChange={setSmoothing} />
                                                         <FeatureItem label="Sticky Aim" value="Toggle" />
                                                         <FeatureItem label="Auto Switch" value="Toggle" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Settings">
+                                                    <FeatureSection title="Environment">
                                                         <FeatureItem label="Range" value="1000m" />
                                                         <FeatureItem label="Teamcheck" value="Enabled" />
                                                         <FeatureItem label="Clientcheck" value="Enabled" />
+                                                        <FeatureItem label="Visibility Check" value="Active" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Smoothing">
-                                                        <FeatureItem label="Smoothing X" value="5.0" />
-                                                        <FeatureItem label="Smoothing Y" value="5.0" />
+                                                    <FeatureSection title="Calculations">
+                                                        <FeatureSlider label="Prediction X" min={0} max={1} step={0.01} value={predictionX} onChange={setPredictionX} />
                                                         <FeatureItem label="Smoothing Style" value="Linear" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Predictions">
-                                                        <FeatureItem label="Prediction X" value="0.12" />
-                                                        <FeatureItem label="Prediction Y" value="0.12" />
                                                     </FeatureSection>
                                                 </>
                                             )}
                                             {activeFeatureCategory === 'Visuals' && (
                                                 <>
-                                                    <FeatureSection title="Visual Options → Visuals">
+                                                    <FeatureSection title="Visuals -> Main">
                                                         <FeatureItem label="Masterswitch" value="Active" />
                                                         <FeatureItem label="Boxes" value="2D / Corner" />
                                                         <FeatureItem label="Box Color" value="#F25C6F" />
-                                                        <FeatureItem label="Box Fill" value="Color Picker" />
+                                                        <FeatureItem label="Box Fill" value="Gradients" />
                                                         <FeatureItem label="Glow ESP" value="Active" />
                                                         <FeatureItem label="Skeletons" value="Toggle" />
                                                         <FeatureItem label="Tracers" value="Bottom/Center" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Health & Info">
+                                                    <FeatureSection title="Visuals -> Info">
                                                         <FeatureItem label="Health" value="Bar/Text" />
                                                         <FeatureItem label="Healthbar Color" value="#10B981" />
-                                                        <FeatureItem label="Healthbar Text" value="#FFFFFF" />
                                                         <FeatureItem label="Name" value="Above/Below" />
                                                         <FeatureItem label="Distance" value="Metric" />
                                                         <FeatureItem label="Target Skeleton" value="Highlight" />
-                                                        <FeatureItem label="Chinahat" value="Cosmetic" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Visual Options → Misc">
-                                                        <FeatureItem label="Flags" value="Toggle" />
+                                                    <FeatureSection title="Visuals -> Misc">
+                                                        <FeatureItem label="Fog Changer" value="Active" />
+                                                        <FeatureItem label="Fog Color" value="#18181b" />
                                                         <FeatureItem label="Tool ESP" value="Name/Icon" />
                                                         <FeatureItem label="Armorbar" value="Active" />
                                                         <FeatureItem label="Crosshair" value="Customizer" />
-                                                        <FeatureItem label="Sonar" value="Pulse" />
-                                                        <FeatureItem label="Locked Indicator" value="Targeted" />
+                                                        <FeatureItem label="Chinahat" value="Cosmetic" />
                                                     </FeatureSection>
                                                 </>
                                             )}
                                             {activeFeatureCategory === 'Movement' && (
                                                 <>
-                                                    <FeatureSection title="Speed">
+                                                    <FeatureSection title="Speed Modification">
                                                         <FeatureItem label="Speed Keybind" value="V" />
                                                         <FeatureItem label="Speed Type" value="CFrame/Walk" />
-                                                        <FeatureItem label="Speed Value" value="5.0x" />
+                                                        <FeatureSlider label="Speed Value" min={1} max={50} step={0.01} value={speedValue} onChange={setSpeedValue} />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Flight">
-                                                        <FeatureItem label="Flight Keybind" value="F" />
-                                                        <FeatureItem label="Flight Type" value="Velocity" />
-                                                        <FeatureItem label="Flight Value" value="15.0" />
+                                                    <FeatureSection title="Attributes">
+                                                        <FeatureItem label="No Slowdown" value="Active" />
+                                                        <FeatureItem label="High Jump" value="Toggle" />
                                                     </FeatureSection>
                                                 </>
                                             )}
                                             {activeFeatureCategory === 'Settings' && (
                                                 <>
-                                                    <FeatureSection title="Menu">
+                                                    <FeatureSection title="Menu Configuration">
                                                         <FeatureItem label="Streamproof" value="Active" />
                                                         <FeatureItem label="VSync" value="Enabled" />
                                                         <FeatureItem label="Menu Keybind" value="INSERT" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Configs">
+                                                    <FeatureSection title="Configurations">
                                                         <div className="space-y-3 mt-2">
                                                             <button className="w-full py-2 bg-zinc-800 rounded text-[10px] font-bold text-zinc-300 hover:bg-zinc-700 transition-colors uppercase tracking-widest">Save Config</button>
                                                             <button className="w-full py-2 bg-zinc-800 rounded text-[10px] font-bold text-zinc-300 hover:bg-zinc-700 transition-colors uppercase tracking-widest">Load Config</button>
@@ -477,23 +547,10 @@
                                 )}
 
                                 {activeTab === 'showcase' && (
-                                    <div className="space-y-8 animate-in">
-                                        <div className="flex items-center justify-between border-b border-zinc-800 pb-6">
-                                            <div>
-                                                <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                                                    User Showcase
-                                                    <span className="text-lychee text-xs bg-lychee/10 px-2 py-0.5 rounded border border-lychee/20 uppercase tracking-tighter">Community</span>
-                                                </h3>
-                                                <p className="text-zinc-500 text-sm mt-1">Check out some of the videos made by our users and creators.</p>
-                                            </div>
-                                            <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer" className="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-lg text-xs font-bold text-zinc-300 hover:border-lychee/30 transition-colors">
-                                                Submit Yours
-                                            </a>
-                                        </div>
-                                        
-                                        <div className="flex flex-col items-center justify-center py-20 bg-zinc-900/10 rounded-2xl border border-zinc-800/30 border-dashed">
-                                            <i className="fa-solid fa-video-slash text-4xl text-zinc-800 mb-4"></i>
-                                            <p className="text-zinc-600 font-mono text-sm tracking-widest uppercase">Waiting for submissions...</p>
+                                    <div className="space-y-8 animate-in text-center py-10">
+                                        <h3 className="text-3xl font-bold text-white mb-8 uppercase tracking-widest">Community Showcase</h3>
+                                        <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl bg-zinc-950">
+                                            <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${PREVIEW_YOUTUBE_ID}?autoplay=0&controls=1&rel=0`} frameBorder="0" allowFullScreen></iframe>
                                         </div>
                                     </div>
                                 )}
