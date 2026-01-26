@@ -11,7 +11,7 @@
           theme: {
             extend: {
               colors: {
-                lychee: '#F25C6F',
+                lychee: '#FCCAD2',
               }
             }
           }
@@ -19,8 +19,8 @@
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
         * { cursor: none !important; }
         body {
@@ -66,8 +66,8 @@
         .cursor-plus::before, .cursor-plus::after {
             content: '';
             position: absolute;
-            background-color: #F25C6F;
-            box-shadow: 0 0 8px #F25C6F;
+            background-color: #FCCAD2;
+            box-shadow: 0 0 8px #FCCAD2;
         }
         .cursor-plus::before {
             width: 100%;
@@ -78,8 +78,7 @@
         .cursor-plus::after {
             width: 2px;
             height: 100%;
-            top: 0;
-            left: 6px;
+            top: 0; left: 6px;
         }
 
         #vanta-bg {
@@ -109,7 +108,7 @@
             top: 0;
             left: 0;
             height: 100%;
-            background-color: #F25C6F;
+            background-color: #FCCAD2;
             transition: width 0.05s linear;
         }
         .custom-slider-input {
@@ -126,8 +125,8 @@
 <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react/": "https://esm.sh/react@^19.2.3/"
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
@@ -153,7 +152,7 @@
                 minWidth: 200.00,
                 scale: 1.00,
                 scaleMobile: 1.00,
-                color: 0xf25c6f,
+                color: 0xfccad2,
                 backgroundColor: 0x09090b,
                 points: 14.00,
                 maxDistance: 20.00,
@@ -224,7 +223,7 @@
         };
 
         const FeatureSection = ({ title, children }) => (
-            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-lychee/10 transition-colors">
+            <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-5 hover:border-lychee/10 transition-colors h-full">
                 <h3 className="text-lychee/80 text-[10px] font-bold uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
                     <div className="w-4 h-px bg-lychee/20"></div>
                     {title}
@@ -286,7 +285,7 @@
                             <div className="space-y-4">
                                 <div className="w-full h-2 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800">
                                     <div 
-                                        className="h-full bg-lychee shadow-[0_0_15px_rgba(242,92,111,0.5)] transition-all duration-300 ease-out"
+                                        className="h-full bg-lychee shadow-[0_0_15px_rgba(252,202,210,0.5)] transition-all duration-300 ease-out"
                                         style={{ width: `${progress}%` }}
                                     ></div>
                                 </div>
@@ -312,16 +311,21 @@
 
         const App = () => {
             const [activeTab, setActiveTab] = useState('home');
-            const [activeFeatureCategory, setActiveFeatureCategory] = useState('Combat');
+            const [activeFeatureCategory, setActiveFeatureCategory] = useState('Legit');
             const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
             // Settings states
-            const [fovSize, setFovSize] = useState(50.0);
-            const [smoothing, setSmoothing] = useState(5.0);
-            const [speedValue, setSpeedValue] = useState(5.0);
+            const [fovSize, setFovSize] = useState(90.0);
+            const [smoothing, setSmoothing] = useState(12.5);
             const [predictionX, setPredictionX] = useState(0.12);
+            const [predictionY, setPredictionY] = useState(0.08);
+            const [walkSpeed, setWalkSpeed] = useState(16.0);
+            const [jumpPower, setJumpPower] = useState(50.0);
+            const [spinSpeed, setSpinSpeed] = useState(5.0);
+            const [orbitX, setOrbitX] = useState(1.0);
+            const [orbitY, setOrbitY] = useState(0.5);
 
-            const categoryIcons = { Combat: 'fa-crosshairs', Visuals: 'fa-eye', Movement: 'fa-person-running', Settings: 'fa-gears' };
+            const categoryIcons = { Legit: 'fa-user-shield', Rage: 'fa-skull', Visuals: 'fa-eye' };
 
             useEffect(() => {
                 const cursor = document.getElementById('custom-cursor');
@@ -339,6 +343,7 @@
                     
                     <main className="px-6 pt-16 pb-20 relative flex-1">
                         <div className="w-full max-w-6xl mx-auto mt-8 mb-20 bg-[#09090b]/80 backdrop-blur-md rounded-xl border border-zinc-800 shadow-2xl overflow-hidden flex flex-col">
+                            {/* Browser Header */}
                             <div className="bg-[#0c0c0e]/90 border-b border-zinc-800 px-4 pt-3 flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <div className="flex gap-2 mr-4">
@@ -349,7 +354,6 @@
                                     <div className="flex gap-1">
                                         <BrowserTab id="home" label="Home" icon="fa-house" isActive={activeTab === 'home'} onClick={setActiveTab} />
                                         <BrowserTab id="features" label="Features" icon="fa-bolt" isActive={activeTab === 'features'} onClick={setActiveTab} />
-                                        <BrowserTab id="showcase" label="Showcase" icon="fa-display" isActive={activeTab === 'showcase'} onClick={setActiveTab} />
                                     </div>
                                 </div>
                                 <div className="pb-3">
@@ -360,6 +364,7 @@
                                 </div>
                             </div>
 
+                            {/* URL Bar */}
                             <div className="bg-[#18181b]/90 px-4 py-2 border-b border-zinc-800 flex items-center gap-3">
                                 <div className="flex gap-2 text-zinc-600 text-xs">
                                     <i className="fa-solid fa-arrow-left cursor-pointer hover:text-zinc-400"></i>
@@ -402,6 +407,7 @@
                                             </div>
                                         </div>
 
+                                        {/* Changelog Section */}
                                         <div className="bg-[#0c0c0e]/60 border border-zinc-800/50 rounded-lg overflow-hidden flex flex-col">
                                             <div className="px-5 py-3 border-b border-zinc-800/50 bg-zinc-900/20 flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
@@ -412,6 +418,14 @@
                                             </div>
                                             <div className="p-6 space-y-3 font-mono">
                                                 <div className="space-y-2">
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">full cheat rewrite / 1/26/2026</span>
+                                                    </div>
+                                                    <div className="flex gap-4 group">
+                                                        <span className="text-lychee font-bold text-xs select-none">[+]</span>
+                                                        <span className="text-zinc-300 text-xs">released - 1/17/2026</span>
+                                                    </div>
                                                     <div className="flex gap-4 group">
                                                         <span className="text-lychee font-bold text-xs select-none">[+]</span>
                                                         <span className="text-zinc-300 text-xs">Fog changer - Visuals -> Misc subtab</span>
@@ -443,8 +457,9 @@
 
                                 {activeTab === 'features' && (
                                     <div className="flex flex-col h-full relative animate-in">
+                                        {/* Feature Categories Navigation */}
                                         <div className="flex gap-2 mb-8 bg-zinc-900/50 p-1 rounded-xl border border-zinc-800 self-start backdrop-blur-sm">
-                                            {['Combat', 'Visuals', 'Movement', 'Settings'].map((cat) => (
+                                            {['Legit', 'Rage', 'Visuals'].map((cat) => (
                                                 <button key={cat} onClick={() => setActiveFeatureCategory(cat)} className={`px-5 py-2.5 rounded-lg text-xs font-bold transition-all flex items-center gap-2.5 ${activeFeatureCategory === cat ? 'bg-lychee text-[#09090b] shadow-lg shadow-lychee/10' : 'text-zinc-500 hover:text-zinc-300'}`}>
                                                     <i className={`fa-solid ${categoryIcons[cat]} text-[10px]`}></i>
                                                     {cat}
@@ -452,105 +467,75 @@
                                             ))}
                                         </div>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                            {activeFeatureCategory === 'Combat' && (
+                                        {/* Features Grid */}
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+                                            {activeFeatureCategory === 'Legit' && (
                                                 <>
                                                     <FeatureSection title="Aimbot">
                                                         <FeatureItem label="Aimbot" value="Toggle" />
-                                                        <FeatureItem label="Aimbot Keybind" value="MB5" />
-                                                        <FeatureItem label="Aimbot Type" value="Mouse" />
-                                                        <FeatureItem label="Aim Part" value="Head" />
-                                                        <FeatureItem label="Target Method" value="FOV" />
+                                                        <FeatureItem label="Aim Mode" value="Mouse / Camera" />
+                                                        <FeatureItem label="Target Hitbox" value="Head / Torso" />
+                                                        <FeatureItem label="Sticky Target" value="Toggle" />
+                                                        <FeatureSlider label="Smoothness" min={1} max={50} step={0.5} value={smoothing} onChange={setSmoothing} />
                                                     </FeatureSection>
                                                     <FeatureSection title="FOV Configuration">
-                                                        <FeatureItem label="Use FOV" value="Active" />
-                                                        <FeatureSlider label="FOV Size" min={10} max={250} step={1} value={fovSize} onChange={setFovSize} />
-                                                        <FeatureItem label="FOV Shape" value="Circle" />
                                                         <FeatureItem label="Draw FOV" value="Active" />
+                                                        <FeatureSlider label="FOV Size" min={10} max={800} step={1} value={fovSize} onChange={setFovSize} />
+                                                        <FeatureItem label="FOV Shape" value="Circle / Square / Poly" />
+                                                        <FeatureItem label="FOV Color" value="Custom" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Accuracy & Smooth">
-                                                        <FeatureSlider label="Smoothing" min={1} max={20} step={0.1} value={smoothing} onChange={setSmoothing} />
-                                                        <FeatureItem label="Sticky Aim" value="Toggle" />
-                                                        <FeatureItem label="Auto Switch" value="Toggle" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Environment">
-                                                        <FeatureItem label="Range" value="1000m" />
-                                                        <FeatureItem label="Teamcheck" value="Enabled" />
-                                                        <FeatureItem label="Clientcheck" value="Enabled" />
-                                                        <FeatureItem label="Visibility Check" value="Active" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Calculations">
+                                                    <FeatureSection title="Predictions">
                                                         <FeatureSlider label="Prediction X" min={0} max={1} step={0.01} value={predictionX} onChange={setPredictionX} />
-                                                        <FeatureItem label="Smoothing Style" value="Linear" />
+                                                        <FeatureSlider label="Prediction Y" min={0} max={1} step={0.01} value={predictionY} onChange={setPredictionY} />
+                                                    </FeatureSection>
+                                                </>
+                                            )}
+                                            {activeFeatureCategory === 'Rage' && (
+                                                <>
+                                                    <FeatureSection title="Movement">
+                                                        <FeatureSlider label="Walk Speed" min={16} max={250} step={1} value={walkSpeed} onChange={setWalkSpeed} />
+                                                        <FeatureItem label="Walk Keybind" value="[V]" />
+                                                        <FeatureSlider label="Jump Power" min={50} max={500} step={5} value={jumpPower} onChange={setJumpPower} />
+                                                        <FeatureItem label="Jump Keybind" value="[B]" />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Angles">
+                                                        <FeatureItem label="Spin Bot" value="Toggle" />
+                                                        <FeatureItem label="Orbit" value="Toggle" />
+                                                        <FeatureSlider label="Spin Speed" min={0} max={50} step={1} value={spinSpeed} onChange={setSpinSpeed} />
+                                                        <FeatureSlider label="Orbit X" min={-10} max={10} step={0.1} value={orbitX} onChange={setOrbitX} />
+                                                        <FeatureSlider label="Orbit Y" min={-10} max={10} step={0.1} value={orbitY} onChange={setOrbitY} />
+                                                    </FeatureSection>
+                                                    <FeatureSection title="Other">
+                                                        <FeatureItem label="Anti Stomp" value="Toggle" />
+                                                        <FeatureItem label="Anti AFK" value="Active" />
+                                                        <FeatureItem label="Auto Farm" value="Module" />
                                                     </FeatureSection>
                                                 </>
                                             )}
                                             {activeFeatureCategory === 'Visuals' && (
                                                 <>
-                                                    <FeatureSection title="Visuals -> Main">
-                                                        <FeatureItem label="Masterswitch" value="Active" />
-                                                        <FeatureItem label="Boxes" value="2D / Corner" />
-                                                        <FeatureItem label="Box Color" value="#F25C6F" />
-                                                        <FeatureItem label="Box Fill" value="Gradients" />
-                                                        <FeatureItem label="Glow ESP" value="Active" />
-                                                        <FeatureItem label="Skeletons" value="Toggle" />
-                                                        <FeatureItem label="Tracers" value="Bottom/Center" />
+                                                    <FeatureSection title="ESP Features">
+                                                        <FeatureItem label="Box ESP" value="Bounding/Corner/Round" />
+                                                        <FeatureItem label="Chams" value="Active" />
+                                                        <FeatureItem label="Skeleton" value="Toggle" />
+                                                        <FeatureItem label="Tracers" value="Center" />
+                                                        <FeatureItem label="HealthBar" value="Vertical" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Visuals -> Info">
-                                                        <FeatureItem label="Health" value="Bar/Text" />
-                                                        <FeatureItem label="Healthbar Color" value="#10B981" />
-                                                        <FeatureItem label="Name" value="Above/Below" />
-                                                        <FeatureItem label="Distance" value="Metric" />
-                                                        <FeatureItem label="Target Skeleton" value="Highlight" />
+                                                    <FeatureSection title="Info ESP">
+                                                        <FeatureItem label="Name" value="Active" />
+                                                        <FeatureItem label="Tool" value="Toggle" />
+                                                        <FeatureItem label="Distance" value="Toggle" />
+                                                        <FeatureItem label="RigType" value="R6/R15" />
+                                                        <FeatureItem label="State/Flags" value="Active" />
                                                     </FeatureSection>
-                                                    <FeatureSection title="Visuals -> Misc">
-                                                        <FeatureItem label="Fog Changer" value="Active" />
-                                                        <FeatureItem label="Fog Color" value="#18181b" />
-                                                        <FeatureItem label="Tool ESP" value="Name/Icon" />
-                                                        <FeatureItem label="Armorbar" value="Active" />
-                                                        <FeatureItem label="Crosshair" value="Customizer" />
-                                                        <FeatureItem label="Chinahat" value="Cosmetic" />
+                                                    <FeatureSection title="Options">
+                                                        <FeatureItem label="Box Fill/Gradient" value="Toggle" />
+                                                        <FeatureItem label="Team Check" value="Enabled" />
+                                                        <FeatureItem label="LocalPlayer Check" value="Toggle" />
+                                                        <FeatureItem label="Tracer Origin" value="Bottom" />
                                                     </FeatureSection>
                                                 </>
                                             )}
-                                            {activeFeatureCategory === 'Movement' && (
-                                                <>
-                                                    <FeatureSection title="Speed Modification">
-                                                        <FeatureItem label="Speed Keybind" value="V" />
-                                                        <FeatureItem label="Speed Type" value="CFrame/Walk" />
-                                                        <FeatureSlider label="Speed Value" min={1} max={50} step={0.01} value={speedValue} onChange={setSpeedValue} />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Attributes">
-                                                        <FeatureItem label="No Slowdown" value="Active" />
-                                                        <FeatureItem label="High Jump" value="Toggle" />
-                                                    </FeatureSection>
-                                                </>
-                                            )}
-                                            {activeFeatureCategory === 'Settings' && (
-                                                <>
-                                                    <FeatureSection title="Menu Configuration">
-                                                        <FeatureItem label="Streamproof" value="Active" />
-                                                        <FeatureItem label="VSync" value="Enabled" />
-                                                        <FeatureItem label="Menu Keybind" value="INSERT" />
-                                                    </FeatureSection>
-                                                    <FeatureSection title="Configurations">
-                                                        <div className="space-y-3 mt-2">
-                                                            <button className="w-full py-2 bg-zinc-800 rounded text-[10px] font-bold text-zinc-300 hover:bg-zinc-700 transition-colors uppercase tracking-widest">Save Config</button>
-                                                            <button className="w-full py-2 bg-zinc-800 rounded text-[10px] font-bold text-zinc-300 hover:bg-zinc-700 transition-colors uppercase tracking-widest">Load Config</button>
-                                                            <button className="w-full py-2 bg-red-500/10 border border-red-500/20 rounded text-[10px] font-bold text-red-400 hover:bg-red-500/20 transition-colors uppercase tracking-widest">Delete Config</button>
-                                                        </div>
-                                                    </FeatureSection>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {activeTab === 'showcase' && (
-                                    <div className="space-y-8 animate-in text-center py-10">
-                                        <h3 className="text-3xl font-bold text-white mb-8 uppercase tracking-widest">Community Showcase</h3>
-                                        <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl bg-zinc-950">
-                                            <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${PREVIEW_YOUTUBE_ID}?autoplay=0&controls=1&rel=0`} frameBorder="0" allowFullScreen></iframe>
                                         </div>
                                     </div>
                                 )}
