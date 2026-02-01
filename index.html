@@ -18,6 +18,9 @@
         }
     </script>
 
+    <!-- Work.ink Redirect Script -->
+    <script src="https://cdn.work.ink/js/redirect.js?id=2814" data-url="https://work.ink/direct/2814" data-max="2"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
@@ -161,6 +164,7 @@
         });
     </script>
 
+    <!-- React and Babel directly in the file for standalone functionality -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -170,7 +174,7 @@
 
         const DISCORD_LINK = "https://discord.gg/fmAkWcaTTM";
         const DOWNLOAD_LINK = "https://work.ink/1RAs/lychee";
-        const PREVIEW_YOUTUBE_ID = "FvJf7Yi9I";
+        const PREVIEW_YOUTUBE_ID = "r-FvJf7Yi9I";
         const LYCHEE_ICON_URL = "https://i.postimg.cc/ZYLfXgqr/New-Project-(8).png";
 
         const BrowserTab = ({ id, label, icon, isActive, onClick }) => (
@@ -231,6 +235,31 @@
                 <div className="flex flex-col">{children}</div>
             </div>
         );
+
+        const WarningModal = ({ isOpen, onDismiss }) => {
+            if (!isOpen) return null;
+            return (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/90 backdrop-blur-md animate-in">
+                    <div className="bg-[#0c0c0e] border border-red-900/30 w-full max-w-md rounded-2xl p-8 shadow-2xl shadow-red-900/10 text-center space-y-6">
+                        <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto border border-red-500/20">
+                            <i className="fa-solid fa-triangle-exclamation text-red-500 text-2xl"></i>
+                        </div>
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-white tracking-tight">Security Alert</h3>
+                            <p className="text-red-500 font-bold leading-relaxed">
+                                do not run any executables the ads show you.
+                            </p>
+                        </div>
+                        <button 
+                            onClick={onDismiss}
+                            className="w-full py-4 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-bold rounded-xl transition-all border border-zinc-800 hover:border-zinc-700 active:scale-95"
+                        >
+                            Understood
+                        </button>
+                    </div>
+                </div>
+            );
+        };
 
         const DownloadModal = ({ isOpen, onClose }) => {
             const [progress, setProgress] = useState(0);
@@ -313,6 +342,7 @@
             const [activeTab, setActiveTab] = useState('home');
             const [activeFeatureCategory, setActiveFeatureCategory] = useState('Legit');
             const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+            const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
             // Settings states
             const [fovSize, setFovSize] = useState(90.0);
@@ -334,11 +364,24 @@
                     cursor.style.top = e.clientY + 'px';
                 };
                 window.addEventListener('mousemove', moveCursor);
+                
+                // First-time warning check
+                const hasSeenWarning = localStorage.getItem('lychee_warning_acknowledged');
+                if (!hasSeenWarning) {
+                    setIsWarningModalOpen(true);
+                }
+
                 return () => window.removeEventListener('mousemove', moveCursor);
             }, []);
 
+            const handleWarningDismiss = () => {
+                localStorage.setItem('lychee_warning_acknowledged', 'true');
+                setIsWarningModalOpen(false);
+            };
+
             return (
                 <div className="min-h-screen relative flex flex-col">
+                    <WarningModal isOpen={isWarningModalOpen} onDismiss={handleWarningDismiss} />
                     <DownloadModal isOpen={isDownloadModalOpen} onClose={() => setIsDownloadModalOpen(false)} />
                     
                     <main className="px-6 pt-16 pb-20 relative flex-1">
@@ -403,6 +446,12 @@
                                                 </div>
                                             </div>
                                             <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-zinc-800 shadow-2xl bg-zinc-900/40 group">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 to-transparent z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                                    <div>
+                                                        <h3 className="text-lychee font-bold text-lg">Lychee.ice External</h3>
+                                                        <p className="text-zinc-400 text-sm">Experience the safest external execution in the market.</p>
+                                                    </div>
+                                                </div>
                                                 <iframe className="w-full h-full" src={`https://www.youtube.com/embed/${PREVIEW_YOUTUBE_ID}?autoplay=0&controls=1&rel=0`} frameBorder="0" allowFullScreen></iframe>
                                             </div>
                                         </div>
